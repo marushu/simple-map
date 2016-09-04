@@ -87,6 +87,7 @@ SimpleMap.prototype.display = function( element, pos, zoom, infoCont ) {
 			} );
 		}
 	} else {
+
 		var url = GMaps.staticMapURL( {
 			center: pos.lat() + ',' + pos.lng(),
 			zoom: zoom,
@@ -95,6 +96,10 @@ SimpleMap.prototype.display = function( element, pos, zoom, infoCont ) {
 				{lat: pos.lat(), lng: pos.lng()}
 			]
 		} );
+
+		var api_key = simplemap_att.api_key;
+		url = url + '&key=' + api_key;
+
 		var img = $( '<img />' );
 		$( img ).attr( 'src', url );
 		$( img ).attr( 'alt', $( element ).text() );

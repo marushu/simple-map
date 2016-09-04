@@ -66,12 +66,12 @@ class Simple_Map {
 
 		$options = get_option( 'simple_map_settings' );
 		$apikey  = ! empty( $options['api_key_field'] )
-			? '?key=' . esc_attr( $options['api_key_field'] )
+			? esc_attr( $options['api_key_field'] )
 			: '';
 
 		wp_register_script(
 			'google-maps-api',
-			'//maps.google.com/maps/api/js' . $apikey,
+			'//maps.google.com/maps/api/js' . '?key=' . $apikey,
 			false,
 			null,
 			true
@@ -87,6 +87,13 @@ class Simple_Map {
 			filemtime( dirname( __FILE__ ).'/js/simple-map.min.js' ),
 			true
 		);
+
+		wp_localize_script( 'simplemap', 'simplemap_att', array(
+			'simplemap_nonce' => wp_create_nonce( 'simplemap-load-nonce' ),
+			'ajaxurl'         => admin_url( 'admin-ajax.php', is_ssl() ? 'https' : 'http' ),
+			'api_key'         => $apikey,
+		));
+
 		wp_enqueue_script( 'simplemap' );
 	}
 
